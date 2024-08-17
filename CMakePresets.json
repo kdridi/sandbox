@@ -45,7 +45,7 @@
       "generator": "Xcode",
       "binaryDir": "${sourceDir}/build/xcode",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake"
       },
       "environment": {
         "MY_ENVIRONMENT_VARIABLE": "Test"
