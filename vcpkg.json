@@ -2,6 +2,7 @@
   "dependencies": [
     "fmt",
     "glfw3",
-    "opengl"
+    "opengl",
+    "sfml"
   ]
 }
