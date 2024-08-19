@@ -3,7 +3,8 @@
     "fmt",
     "glfw3",
     "opengl",
+    "physfs",
     "sfml",
-    "physfs"
+    "spdlog"
   ]
 }
