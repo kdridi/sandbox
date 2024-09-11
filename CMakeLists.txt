@@ -5,17 +5,24 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project(sandbox)
+get_filename_component(NAMESPACE ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+project(${NAMESPACE})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_subdirectory(libs/pathSolver)
+file(GLOB LIB_SUBDIRS "libs/*")
 
-add_subdirectory(projects/sample00)
-add_subdirectory(projects/sample01)
-add_subdirectory(projects/sample02)
-add_subdirectory(projects/sample03)
-add_subdirectory(projects/sample04)
-add_subdirectory(projects/sample05)
-add_subdirectory(projects/sample06)
+foreach(subdir ${LIB_SUBDIRS})
+  if(IS_DIRECTORY ${subdir})
+    add_subdirectory(${subdir})
+  endif()
+endforeach()
+
+file(GLOB APP_SUBDIRS "projects/*")
+
+foreach(subdir ${APP_SUBDIRS})
+  if(IS_DIRECTORY ${subdir})
+    add_subdirectory(${subdir})
+  endif()
+endforeach()

@@ -1,19 +1,15 @@
-project(sample01)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake)
 
 find_package(fmt CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
 
-add_executable(sample01
-    src/main.cpp
-)
-
-target_compile_definitions(sample01 PRIVATE
+target_compile_definitions(${PROJECT_NAME} PRIVATE
     GL_SILENCE_DEPRECATION
 )
 
-target_link_libraries(sample01 PRIVATE
-    OpenGL::GL
+target_link_libraries(${PROJECT_NAME} PRIVATE
     fmt::fmt
+    OpenGL::GL
     glfw
 )

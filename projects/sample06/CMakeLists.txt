@@ -1,29 +1,10 @@
-project(sample06)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake)
 
 find_package(spdlog CONFIG REQUIRED)
-find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
+find_package(SFML COMPONENTS system window graphics network CONFIG REQUIRED)
 
-add_executable(sample06
-    src/main.cpp
-
-    src/Level.h
-    src/ParticleSystem.h
-    src/ParticleSystem.cpp
-    src/TileMap.h
-    src/TileMap.cpp
-)
-
-target_compile_definitions(sample02 PRIVATE
-    GL_SILENCE_DEPRECATION
-)
-
-target_link_libraries(sample06 PRIVATE
-    sfml-system sfml-network sfml-graphics sfml-window
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    sfml-system sfml-window sfml-graphics sfml-network
     spdlog::spdlog
-    ArykowPathSolver
-)
-
-add_custom_command(TARGET sample06 POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:sample06>/assets
+    ${NAMESPACE}_pathSolver
 )

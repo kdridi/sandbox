@@ -1,15 +1,7 @@
-project(sample02)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../common.cmake)
 
-find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
+find_package(SFML COMPONENTS system window graphics network CONFIG REQUIRED)
 
-add_executable(sample02
-    src/main.cpp
-)
-
-target_compile_definitions(sample02 PRIVATE
-    GL_SILENCE_DEPRECATION
-)
-
-target_link_libraries(sample02 PRIVATE
-    sfml-system sfml-network sfml-graphics sfml-window
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    sfml-system sfml-window sfml-graphics sfml-network
 )
