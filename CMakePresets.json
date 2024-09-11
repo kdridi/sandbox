@@ -1,70 +1,131 @@
 {
-  "version": 6,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 30,
-    "patch": 0
-  },
-  "configurePresets": [
-    {
-      "name": "default",
-      "displayName": "Default Config",
-      "description": "Default build using Ninja generator",
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/build/default",
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake"
-      },
-      "environment": {
-        "MY_ENVIRONMENT_VARIABLE": "Test",
-        "PATH": "$env{HOME}/ninja/bin:$penv{PATH}"
-      }
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 30,
+        "patch": 0
     },
-    {
-      "name": "ninja-multi",
-      "inherits": "default",
-      "displayName": "Ninja Multi-Config",
-      "description": "Default build using Ninja Multi-Config generator",
-      "generator": "Ninja Multi-Config"
-    },
-    {
-      "name": "windows-only",
-      "inherits": "default",
-      "displayName": "Windows-only configuration",
-      "description": "This build is only available on Windows",
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-      }
-    },
-    {
-      "name": "xcode",
-      "displayName": "Xcode configuration",
-      "description": "This build is only available on MacOS",
-      "generator": "Xcode",
-      "binaryDir": "${sourceDir}/build/xcode",
-      "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake"
-      },
-      "environment": {
-        "MY_ENVIRONMENT_VARIABLE": "Test"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Darwin"
-      }
-    }
-  ],
-  "buildPresets": [
-    {
-      "name": "default",
-      "configurePreset": "default"
-    },
-    {
-      "name": "xcode",
-      "configurePreset": "xcode"
-    }
-  ]
+    "configurePresets": [
+        {
+            "name": "windows-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/windows/build/${presetName}",
+            "installDir": "${sourceDir}/build/windows/install/${presetName}",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_C_COMPILER": "cl.exe",
+                "CMAKE_CXX_COMPILER": "cl.exe"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "x64-debug",
+            "displayName": "windows x64 Debug",
+            "inherits": "windows-base",
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "x64-release",
+            "displayName": "windows x64 Release",
+            "inherits": "x64-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "x86-debug",
+            "displayName": "windows x86 Debug",
+            "inherits": "windows-base",
+            "architecture": {
+                "value": "x86",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "x86-release",
+            "displayName": "windows x86 Release",
+            "inherits": "x86-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "default",
+            "displayName": "Default Config",
+            "description": "Default build using Ninja generator",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/default",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake"
+            },
+            "environment": {
+                "MY_ENVIRONMENT_VARIABLE": "Test",
+                "PATH": "$env{HOME}/ninja/bin:$penv{PATH}"
+            }
+        },
+        {
+            "name": "ninja-multi",
+            "inherits": "default",
+            "displayName": "Ninja Multi-Config",
+            "description": "Default build using Ninja Multi-Config generator",
+            "generator": "Ninja Multi-Config"
+        },
+        {
+            "name": "windows-only",
+            "inherits": "default",
+            "displayName": "Windows-only configuration",
+            "description": "This build is only available on Windows",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "cl.exe",
+                "CMAKE_CXX_COMPILER": "cl.exe"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "xcode",
+            "displayName": "Xcode configuration",
+            "description": "This build is only available on MacOS",
+            "generator": "Xcode",
+            "binaryDir": "${sourceDir}/build/xcode",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/submodules/github.com/microsoft/vcpkg.git/scripts/buildsystems/vcpkg.cmake"
+            },
+            "environment": {
+                "MY_ENVIRONMENT_VARIABLE": "Test"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        },
+        {
+            "name": "xcode",
+            "configurePreset": "xcode"
+        }
+    ]
 }
