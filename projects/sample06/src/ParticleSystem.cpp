@@ -1,5 +1,8 @@
 #include "ParticleSystem.h"
 
+#include <cmath>
+#include <cstdlib>
+
 ParticleSystem::ParticleSystem(unsigned int count)
     : m_particles(count),
       m_vertices(sf::Points, count),
@@ -10,8 +13,7 @@ ParticleSystem::ParticleSystem(unsigned int count)
 
 void ParticleSystem::update(sf::Time elapsed)
 {
-    for (std::size_t i = 0; i < m_particles.size(); ++i)
-    {
+    for (std::size_t i = 0; i < m_particles.size(); ++i) {
         // update the particle lifetime
         Particle &p = m_particles[i];
         p.lifetime -= elapsed;

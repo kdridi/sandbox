@@ -1,18 +1,17 @@
-#include "arykow/PathSolver.h"
+#include <core/pathSolver/pathSolver.h>
 
-#include <spdlog/spdlog.h>
 #include <fstream>
+#include <spdlog/spdlog.h>
 
 int main(int argc, const char *argv[])
 {
-    ARYKOW_PATHSOLVER_INIT(argv[0]);
+    PATH_SOLVER_INIT(argc, argv);
 
-    std::string filePath = ARYKOW_PATHSOLVER_SOLVE("assets/sample.txt");
+    std::string filePath = PATH_SOLVER_SOLVE("assets/sample.txt");
     spdlog::info("File path: {}", filePath);
 
     std::ifstream file(filePath);
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         spdlog::info("Error while opening file '{}'", filePath);
         return EXIT_FAILURE;
     }

@@ -1,16 +1,14 @@
 #include "Loader.h"
 
-#include <physfs.h>
-#include <filesystem>
 #include <cassert>
+#include <filesystem>
 #include <fmt/core.h>
+#include <physfs.h>
 
-namespace arykow::assets
-{
+namespace arykow::assets {
     Loader::~Loader()
     {
-        if (m_initialized)
-        {
+        if (m_initialized) {
             PHYSFS_deinit();
         }
     }
@@ -21,29 +19,28 @@ namespace arykow::assets
         return instance;
     }
 
-    void Loader::initialize(const std::string &_path)
+    void Loader::initialize(int argc, const char *argv[])
     {
+        assert(argc > 0 && "Loader::initialize() argc is invalid");
+        assert(*argv && "Loader::initialize() argv[0]");
         assert(!m_initialized && "Loader::initialize() called twice");
-        if (m_initialized)
-        {
+        if (m_initialized) {
             fmt::print("Loader::initialize() called twice\n");
             return;
         }
 
-        if (!PHYSFS_init(_path.c_str()))
-        {
+        if (!PHYSFS_init(*argv)) {
             fmt::print("Loader::initialize() Error initializing PhysFS: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return;
         }
 
-        std::filesystem::path execPath = std::filesystem::absolute(_path.c_str()).parent_path();
+        std::filesystem::path execPath = std::filesystem::absolute(*argv).parent_path();
         fmt::print("Loader::initialize() Executable path: {}\n", execPath.string());
 
         std::string zipPath = (execPath / "assets.zip").string();
         fmt::print("Loader::initialize() ZIP file path: {}\n", zipPath);
 
-        if (!PHYSFS_mount(zipPath.c_str(), nullptr, 1))
-        {
+        if (!PHYSFS_mount(zipPath.c_str(), nullptr, 1)) {
             fmt::print("Loader::initialize() Error while mounting ZIP file: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return;
         }
@@ -54,8 +51,7 @@ namespace arykow::assets
     std::vector<unsigned char> Loader::getFileData(const std::string &_path)
     {
         PHYSFS_File *file = PHYSFS_openRead(_path.c_str());
-        if (!file)
-        {
+        if (!file) {
             fmt::print("Loader::getFileData() Error while loading file '{}': {}\n", _path, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return {};
         }
@@ -66,4 +62,4 @@ namespace arykow::assets
 
         return bytes;
     }
-} // namespace arykow
+} // namespace arykow::assets

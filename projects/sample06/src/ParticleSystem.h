@@ -4,8 +4,7 @@
 
 class ParticleSystem
     : public sf::Drawable,
-      public sf::Transformable
-{
+      public sf::Transformable {
 public:
     ParticleSystem(unsigned int count);
 
@@ -17,8 +16,7 @@ private:
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
 private:
-    struct Particle
-    {
+    struct Particle {
         sf::Vector2f velocity;
         sf::Time lifetime;
     };

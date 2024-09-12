@@ -1,25 +1,24 @@
-#include "arykow/PathSolver.h"
-
 #include "Level.h"
 #include "ParticleSystem.h"
 #include "TileMap.h"
 
-#include <spdlog/spdlog.h>
+#include <core/pathSolver/pathSolver.h>
+
 #include <SFML/Graphics.hpp>
+#include <spdlog/spdlog.h>
 
 int main(int argc, const char *argv[])
 {
-    ARYKOW_PATHSOLVER_INIT(argv[0]);
+    PATH_SOLVER_INIT(argc, argv);
 
     // create the window
     sf::RenderWindow window(sf::VideoMode(16 * 64, 8 * 64), "Tilemap");
 
     // create the tilemap from the level definition
-    const std::string tileMapPath = ARYKOW_PATHSOLVER_SOLVE("assets/textures/icons.png");
+    const std::string tileMapPath = PATH_SOLVER_SOLVE("assets/textures/icons.png");
 
     TileMap map;
-    if (!map.load(tileMapPath, sf::Vector2u(64, 64), level, 16, 8))
-    {
+    if (!map.load(tileMapPath, sf::Vector2u(64, 64), level, 16, 8)) {
         spdlog::warn("Error while loading the tilemap at '{}'", tileMapPath);
         return EXIT_FAILURE;
     }
@@ -31,14 +30,11 @@ int main(int argc, const char *argv[])
     sf::Clock clock;
 
     // run the main loop
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         // handle events
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if ((event.type == sf::Event::Closed) || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
-            {
+        while (window.pollEvent(event)) {
+            if ((event.type == sf::Event::Closed) || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
                 spdlog::info("Window closed");
                 window.close();
             }

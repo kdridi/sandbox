@@ -5,6 +5,9 @@
 
 int main(int argc, const char *argv[])
 {
+    if (argc == 0)
+        return EXIT_FAILURE;
+
     std::filesystem::path execPath = std::filesystem::absolute(argv[0]).parent_path();
     fmt::print("Executable path: {}\n", execPath.string());
 
@@ -12,8 +15,7 @@ int main(int argc, const char *argv[])
     fmt::print("File path: {}\n", filePath);
 
     std::ifstream file(filePath);
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         fmt::print("Error while opening file '{}'\n", filePath);
         return EXIT_FAILURE;
     }

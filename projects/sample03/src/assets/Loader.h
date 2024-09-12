@@ -1,13 +1,11 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
 
-namespace arykow::assets
-{
-    class Loader
-    {
+namespace arykow::assets {
+    class Loader {
     private:
         bool m_initialized{false};
 
@@ -20,11 +18,11 @@ namespace arykow::assets
 
         static Loader &GetInstance();
 
-        void initialize(const std::string &_path);
+        void initialize(int argc, const char *argv[]);
 
         std::vector<uint8_t> getFileData(const std::string &_path);
     };
 } // namespace arykow::assets
 
-#define ARYKOW_ASSETS_INIT(zipFile) arykow::assets::Loader::GetInstance().initialize(zipFile)
+#define ARYKOW_ASSETS_INIT(argc, argv) arykow::assets::Loader::GetInstance().initialize(argc, argv)
 #define ARYKOW_ASSETS_LOAD(path) arykow::assets::Loader::GetInstance().getFileData(path)
