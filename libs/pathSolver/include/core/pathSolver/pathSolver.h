@@ -3,28 +3,15 @@
 #include <filesystem>
 #include <optional>
 
-namespace arykow {
+namespace core {
     class PathSolver {
-    private:
-        std::optional<std::filesystem::path> m_execPath;
-
-        PathSolver() = default;
-        ~PathSolver();
-
     public:
-        PathSolver(const PathSolver &) = delete;
-        PathSolver &operator=(const PathSolver &) = delete;
-
         static PathSolver &GetInstance();
 
-        void initialize(int argc, const char *argv[]);
-
-        std::string solve(const std::string &_path);
-
-    private:
-        const char *parsePath(int argc, const char *argv[]);
+        virtual void initialize(int argc, const char *argv[]) = 0;
+        virtual std::string solve(const std::string &_path) = 0;
     };
-} // namespace arykow
+} // namespace core
 
-#define PATH_SOLVER_INIT(argc, argv) arykow::PathSolver::GetInstance().initialize(argc, argv)
-#define PATH_SOLVER_SOLVE(path) arykow::PathSolver::GetInstance().solve(path)
+#define PATH_SOLVER_INIT(argc, argv) core::PathSolver::GetInstance().initialize(argc, argv)
+#define PATH_SOLVER_SOLVE(path) core::PathSolver::GetInstance().solve(path)

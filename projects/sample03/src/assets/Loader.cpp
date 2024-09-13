@@ -5,8 +5,29 @@
 #include <fmt/core.h>
 #include <physfs.h>
 
-namespace arykow::assets {
-    Loader::~Loader()
+namespace assets {
+    class LoaderImpl : public Loader {
+    private:
+        bool m_initialized{false};
+
+    public:
+        LoaderImpl() = default;
+        ~LoaderImpl();
+
+        void initialize(int argc, const char *argv[]) override final;
+        std::vector<uint8_t> getFileData(const std::string &_path) override final;
+
+    private:
+        const char *parsePath(int argc, const char *argv[]);
+    };
+
+    Loader &Loader::GetInstance()
+    {
+        static LoaderImpl instance;
+        return instance;
+    }
+
+    LoaderImpl::~LoaderImpl()
     {
         if (!m_initialized)
             return;
@@ -14,13 +35,7 @@ namespace arykow::assets {
         PHYSFS_deinit();
     }
 
-    Loader &Loader::GetInstance()
-    {
-        static Loader instance;
-        return instance;
-    }
-
-    void Loader::initialize(int argc, const char *argv[])
+    void LoaderImpl::initialize(int argc, const char *argv[])
     {
         assert(!m_initialized && "Already initialized");
         if (m_initialized) {
@@ -36,25 +51,25 @@ namespace arykow::assets {
         }
 
         if (!PHYSFS_init(path)) {
-            fmt::print("Loader::initialize() Error initializing PhysFS: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            fmt::print("Loader::initialize() Error -- Can't initializing PhysFS: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return;
         }
 
         std::filesystem::path execPath = std::filesystem::absolute(path).parent_path();
-        fmt::print("Loader::initialize() Executable path: {}\n", execPath.string());
+        fmt::print("Loader::initialize() -- Executable path: {}\n", execPath.string());
 
         std::string zipPath = (execPath / "assets.zip").string();
-        fmt::print("Loader::initialize() ZIP file path: {}\n", zipPath);
+        fmt::print("Loader::initialize() -- ZIP file path: {}\n", zipPath);
 
         if (!PHYSFS_mount(zipPath.c_str(), nullptr, 1)) {
-            fmt::print("Loader::initialize() Error while mounting ZIP file: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            fmt::print("Loader::initialize() Error -- Can't mount ZIP file: {}\n", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return;
         }
 
         m_initialized = true;
     }
 
-    std::vector<unsigned char> Loader::getFileData(const std::string &_path)
+    std::vector<unsigned char> LoaderImpl::getFileData(const std::string &_path)
     {
         assert(m_initialized && "Not initialized");
         if (!m_initialized) {
@@ -64,14 +79,14 @@ namespace arykow::assets {
 
         PHYSFS_File *file = PHYSFS_openRead(_path.c_str());
         if (!file) {
-            fmt::print("Loader::getFileData() Error while loading file '{}': {}\n", _path, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+            fmt::print("Loader::getFileData() Error -- Can't open file for reading '{}': {}\n", _path, PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
             return {};
         }
 
         const PHYSFS_sint64 length{PHYSFS_fileLength(file)};
         if (!(length <= UINT32_MAX)) {
             assert(false && "Bad file length");
-            fmt::print("Loader::getFileData() Bad file length '{}': {}\n", _path, length);
+            fmt::print("Loader::getFileData() Error -- Bad file length '{}': {}\n", _path, length);
             return {};
         }
 
@@ -82,10 +97,10 @@ namespace arykow::assets {
         return bytes;
     }
 
-    const char *Loader::parsePath(int argc, const char *argv[])
+    const char *LoaderImpl::parsePath(int argc, const char *argv[])
     {
         if (argc == 0)
             return nullptr;
         return *argv;
     }
-} // namespace arykow::assets
+} // namespace assets

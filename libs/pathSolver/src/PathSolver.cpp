@@ -2,27 +2,48 @@
 
 #include <spdlog/spdlog.h>
 
-namespace arykow {
-    PathSolver::~PathSolver()
+namespace core {
+
+    class PathSolverImpl : public PathSolver {
+    private:
+        std::optional<std::filesystem::path> m_execPath;
+
+    public:
+        PathSolverImpl() = default;
+        ~PathSolverImpl();
+
+        void initialize(int argc, const char *argv[]) override final;
+        std::string solve(const std::string &_path) override final;
+
+    private:
+        const char *parsePath(int argc, const char *argv[]);
+    };
+
+    PathSolver &PathSolver::GetInstance()
+    {
+        static PathSolverImpl instance;
+        return instance;
+    }
+
+    PathSolverImpl::~PathSolverImpl()
     {
         if (m_execPath)
             m_execPath = {};
     }
 
-    PathSolver &PathSolver::GetInstance()
+    void PathSolverImpl::initialize(int argc, const char *argv[])
     {
-        static PathSolver instance;
-        return instance;
-    }
-
-    void PathSolver::initialize(int argc, const char *argv[])
-    {
-        const char *path = parsePath(argc, argv);
-
-        assert(path != nullptr && "Loader::initialize() path is invalid");
-        assert(!m_execPath && "PathSolver::initialize() called twice");
+        assert(!m_execPath && "Called twice");
         if (m_execPath) {
-            spdlog::warn("PathSolver::initialize() called twice");
+            spdlog::warn("PathSolver::initialize() Error -- Called twice");
+            return;
+        }
+
+        const char *path = parsePath(argc, argv);
+        assert(path != nullptr && "Bad Argument");
+        if (path == nullptr) {
+
+            spdlog::warn("PathSolver::initialize() Error -- Bad Argument");
             return;
         }
 
@@ -30,15 +51,15 @@ namespace arykow {
         spdlog::info("PathSolver::initialize() Executable path: {}", m_execPath->string());
     }
 
-    std::string PathSolver::solve(const std::string &_path)
+    std::string PathSolverImpl::solve(const std::string &_path)
     {
         return (*m_execPath / _path).string();
     }
 
-    const char *PathSolver::parsePath(int argc, const char *argv[])
+    const char *PathSolverImpl::parsePath(int argc, const char *argv[])
     {
         if (argc == 0)
             return nullptr;
         return *argv;
     }
-} // namespace arykow
+} // namespace core
