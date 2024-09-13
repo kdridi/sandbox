@@ -21,6 +21,9 @@ namespace arykow::assets {
         void initialize(int argc, const char *argv[]);
 
         std::vector<uint8_t> getFileData(const std::string &_path);
+
+    private:
+        const char *parsePath(int argc, const char *argv[]);
     };
 } // namespace arykow::assets
 

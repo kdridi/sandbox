@@ -20,6 +20,9 @@ namespace arykow {
         void initialize(int argc, const char *argv[]);
 
         std::string solve(const std::string &_path);
+
+    private:
+        const char *parsePath(int argc, const char *argv[]);
     };
 } // namespace arykow
 
