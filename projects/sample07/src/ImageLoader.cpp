@@ -90,7 +90,7 @@ private:
             }
         }
 
-        return std::move(mergedImage);
+        return mergedImage;
     }
 
     virtual bool save(const std::filesystem::path &_filepath) const override final
@@ -154,11 +154,11 @@ std::unique_ptr<Image> Image::merge(std::deque<std::unique_ptr<Image>> _images, 
         if (_reverse) {
             std::unique_ptr<Image> image{std::move(_images.back())};
             _images.pop_back();
-            return std::move(image);
+            return image;
         } else {
             std::unique_ptr<Image> image{std::move(_images.front())};
             _images.pop_front();
-            return std::move(image);
+            return image;
         }
     };
 

@@ -56,5 +56,5 @@ namespace core {
         return instance;
     }
 
-    core::Module::Registerer<core::EnvVars> registerer;
+    core::Module::Registerer<core::EnvVars> registererEnvVars;
 } // namespace core

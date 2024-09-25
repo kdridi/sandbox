@@ -133,6 +133,10 @@
       "inherits": "common",
       "displayName": "xcode",
       "generator": "Xcode",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",

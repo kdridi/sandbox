@@ -55,7 +55,7 @@ std::unique_ptr<sf::Texture> createTexture(const Image &_image)
         return nullptr;
     }
 
-    return std::move(texture);
+    return texture;
 }
 
 std::unique_ptr<Image> getImage()
@@ -64,7 +64,7 @@ std::unique_ptr<Image> getImage()
     spdlog::info("Loading texture from {}", texturePath.string());
 
     std::unique_ptr<Image> image{IMAGE_LOAD_TGA(texturePath)};
-    return std::move(image);
+    return image;
 }
 
 std::unique_ptr<Image> getMergedImage()

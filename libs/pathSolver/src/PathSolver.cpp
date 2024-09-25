@@ -71,5 +71,5 @@ namespace core {
         return instance;
     }
 
-    core::Module::Registerer<core::PathSolver> registerer;
+    core::Module::Registerer<core::PathSolver> registererPathSolver;
 } // namespace core
