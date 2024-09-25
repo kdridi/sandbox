@@ -2,6 +2,9 @@
 
 #include <spdlog/spdlog.h>
 
+#include <filesystem>
+#include <optional>
+
 namespace core {
 
     class PathSolverImpl : public PathSolver {
@@ -12,18 +15,10 @@ namespace core {
         PathSolverImpl() = default;
         ~PathSolverImpl();
 
-        void initialize(int argc, const char *argv[]) override final;
-        std::string solve(const std::string &_path) override final;
+        void init(int argc, const char *argv[], const char *envp[]) override final;
 
-    private:
-        const char *parsePath(int argc, const char *argv[]);
+        std::filesystem::path solve(const std::filesystem::path &_path) override final;
     };
-
-    PathSolver &PathSolver::GetInstance()
-    {
-        static PathSolverImpl instance;
-        return instance;
-    }
 
     PathSolverImpl::~PathSolverImpl()
     {
@@ -31,15 +26,23 @@ namespace core {
             m_execPath = {};
     }
 
-    void PathSolverImpl::initialize(int argc, const char *argv[])
+    void PathSolverImpl::init(int argc, const char *argv[], const char *envp[])
     {
+        (void)envp;
+
+        auto parsePath = [=]() -> const char * {
+            if (argc == 0)
+                return nullptr;
+            return *argv;
+        };
+
         assert(!m_execPath && "Called twice");
         if (m_execPath) {
             spdlog::warn("PathSolver::initialize() Error -- Called twice");
             return;
         }
 
-        const char *path = parsePath(argc, argv);
+        const char *path = parsePath();
         assert(path != nullptr && "Bad Argument");
         if (path == nullptr) {
 
@@ -51,15 +54,22 @@ namespace core {
         spdlog::info("PathSolver::initialize() Executable path: {}", m_execPath->string());
     }
 
-    std::string PathSolverImpl::solve(const std::string &_path)
+    std::filesystem::path PathSolverImpl::solve(const std::filesystem::path &_path)
     {
-        return (*m_execPath / _path).string();
+        assert(m_execPath && "Not initialized");
+        if (!m_execPath) {
+            spdlog::warn("PathSolver::solve() Error -- Not initialized");
+            return {};
+        }
+
+        return *m_execPath / _path;
     }
 
-    const char *PathSolverImpl::parsePath(int argc, const char *argv[])
+    PathSolver &PathSolver::GetInstance()
     {
-        if (argc == 0)
-            return nullptr;
-        return *argv;
+        static PathSolverImpl instance;
+        return instance;
     }
+
+    core::Module::Registerer<core::PathSolver> registerer;
 } // namespace core

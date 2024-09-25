@@ -5,6 +5,7 @@
     "opengl",
     "physfs",
     "sfml",
-    "spdlog"
+    "spdlog",
+    "freeimage"
   ]
 }

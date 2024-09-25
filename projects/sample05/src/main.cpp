@@ -3,16 +3,16 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 
-int main(int argc, const char *argv[])
+int main(int argc, const char *argv[], const char *envp[])
 {
-    PATH_SOLVER_INIT(argc, argv);
+    MODULES_START(argc, argv, envp);
 
-    std::string filePath = PATH_SOLVER_SOLVE("assets/sample.txt");
-    spdlog::info("File path: {}", filePath);
+    std::filesystem::path filePath = PATH_SOLVER_SOLVE("assets/sample.txt");
+    spdlog::info("File path: {}", filePath.string());
 
     std::ifstream file(filePath);
     if (!file.is_open()) {
-        spdlog::info("Error while opening file '{}'", filePath);
+        spdlog::info("Error while opening file '{}'", filePath.string());
         return EXIT_FAILURE;
     }
 

@@ -7,19 +7,19 @@
 #include <SFML/Graphics.hpp>
 #include <spdlog/spdlog.h>
 
-int main(int argc, const char *argv[])
+int main(int argc, const char *argv[], const char *envp[])
 {
-    PATH_SOLVER_INIT(argc, argv);
+    MODULES_START(argc, argv, envp);
 
     // create the window
     sf::RenderWindow window(sf::VideoMode(16 * 64, 8 * 64), "Tilemap");
 
     // create the tilemap from the level definition
-    const std::string tileMapPath = PATH_SOLVER_SOLVE("assets/textures/icons.png");
+    const std::filesystem::path tileMapPath = PATH_SOLVER_SOLVE("assets/textures/icons.png");
 
     TileMap map;
-    if (!map.load(tileMapPath, sf::Vector2u(64, 64), level, 16, 8)) {
-        spdlog::warn("Error while loading the tilemap at '{}'", tileMapPath);
+    if (!map.load(tileMapPath.string(), sf::Vector2u(64, 64), level, 16, 8)) {
+        spdlog::warn("Error while loading the tilemap at '{}'", tileMapPath.string());
         return EXIT_FAILURE;
     }
 
