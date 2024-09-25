@@ -14,18 +14,12 @@ namespace assets {
         LoaderImpl() = default;
         ~LoaderImpl();
 
-        void initialize(int argc, const char *argv[]) override final;
+        void init(int argc, const char *argv[], const char *envp[]) override final;
         std::vector<uint8_t> getFileData(const std::string &_path) override final;
 
     private:
         const char *parsePath(int argc, const char *argv[]);
     };
-
-    Loader &Loader::GetInstance()
-    {
-        static LoaderImpl instance;
-        return instance;
-    }
 
     LoaderImpl::~LoaderImpl()
     {
@@ -35,8 +29,10 @@ namespace assets {
         PHYSFS_deinit();
     }
 
-    void LoaderImpl::initialize(int argc, const char *argv[])
+    void LoaderImpl::init(int argc, const char *argv[], const char *envp[])
     {
+        (void)envp;
+
         assert(!m_initialized && "Already initialized");
         if (m_initialized) {
             fmt::print("Loader::initialize() Error -- Already initialized");
@@ -103,4 +99,12 @@ namespace assets {
             return nullptr;
         return *argv;
     }
+
+    Loader &Loader::GetInstance()
+    {
+        static LoaderImpl instance;
+        return instance;
+    }
+
+    core::Module::Registerer<Loader> registererLoader;
 } // namespace assets

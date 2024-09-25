@@ -129,25 +129,38 @@
       }
     },
     {
-      "name": "xcode",
+      "name": "macos",
+      "hidden": true,
       "inherits": "common",
-      "displayName": "xcode",
-      "generator": "Xcode",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "/usr/bin/clang",
-        "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
       },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Darwin"
       }
+    },
+    {
+      "name": "macos-xcode",
+      "inherits": "macos",
+      "generator": "Xcode"
+    },
+    {
+      "name": "macos-makefile",
+      "inherits": "macos",
+      "generator": "Unix Makefiles"
     }
   ],
   "buildPresets": [
     {
-      "name": "xcode",
-      "configurePreset": "xcode"
+      "name": "macos-xcode",
+      "configurePreset": "macos-xcode"
+    },
+    {
+      "name": "macos-makefile",
+      "configurePreset": "macos-makefile"
     },
     {
       "name": "linux-x64-debug",

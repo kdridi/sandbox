@@ -2,9 +2,9 @@
 
 #include <fmt/core.h>
 
-int main(int argc, const char *argv[])
+int main(int argc, const char *argv[], const char *envp[])
 {
-    ASSETS_INIT(argc, argv);
+    MODULES_START(argc, argv, envp);
     std::vector<uint8_t> data = ASSETS_LOAD("assets/sample.txt");
 
     std::string str(data.begin(), data.end());
