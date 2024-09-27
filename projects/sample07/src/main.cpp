@@ -86,8 +86,11 @@ int main(int argc, const char *argv[], const char *env[])
 
     auto home{ENV_VARS_GET("HOME")};
     if (!home) {
-        spdlog::warn("HOME not set");
-        return EXIT_FAILURE;
+        home = ENV_VARS_GET("USERPROFILE");
+        if (!home) {
+            spdlog::warn("HOME not set");
+            return EXIT_FAILURE;
+        }
     }
 
     std::filesystem::path homePath = std::filesystem::absolute(*home);
