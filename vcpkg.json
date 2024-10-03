@@ -1,11 +1,12 @@
 {
   "dependencies": [
     "fmt",
+    "freeimage",
     "glfw3",
+    "magnum",
     "opengl",
     "physfs",
     "sfml",
-    "spdlog",
-    "freeimage"
+    "spdlog"
   ]
 }
