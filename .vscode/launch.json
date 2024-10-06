@@ -36,6 +36,17 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "mandelbrot00",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Windows/windows-x64-debug/build/projects/mandelbrot00/mandelbrot00.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "console": "integratedTerminal"
         }
     ]
 }
