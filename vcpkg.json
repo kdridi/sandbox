@@ -4,10 +4,11 @@
     "freeimage",
     "glfw3",
     "magnum",
+    "opencl",
     "opengl",
     "physfs",
     "sfml",
     "spdlog",
-    "opencl"
+    "glew"
   ]
 }

@@ -47,6 +47,28 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "shadertoy00",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Windows/windows-x64-debug/build/projects/shadertoy00/shadertoy00.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "shadertoy01",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Windows/windows-x64-debug/build/projects/shadertoy01/shadertoy01.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "console": "integratedTerminal"
         }
     ]
 }
