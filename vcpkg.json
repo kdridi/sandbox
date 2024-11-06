@@ -2,6 +2,7 @@
   "dependencies": [
     "fmt",
     "freeimage",
+    "glew",
     "glfw3",
     "magnum",
     "opencl",
@@ -9,6 +10,6 @@
     "physfs",
     "sfml",
     "spdlog",
-    "glew"
+    "vulkan"
   ]
 }
