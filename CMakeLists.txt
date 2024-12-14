@@ -10,6 +10,11 @@ project(${NAMESPACE})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
+message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+message("C++ Compiler: ${CMAKE_CXX_COMPILER}")
+message("C++ Compiler Version: ${CMAKE_CXX_COMPILER_VERSION}")
 
 add_definitions(-DNAMESPACE="${NAMESPACE}")
 

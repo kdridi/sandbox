@@ -16,6 +16,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "cpp00",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/Windows/windows-x64-debug/build/projects/cpp00/cpp00.exe",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "sample07",
             "type": "cppvsdbg",
             "request": "launch",
