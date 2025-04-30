@@ -4,12 +4,19 @@
     "freeimage",
     "glew",
     "glfw3",
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental"
+      ]
+    },
     "magnum",
     "opencl",
     "opengl",
     "physfs",
     "sfml",
     "spdlog",
-    "vulkan"
+    "vulkan",
+    "imgui-sfml"
   ]
 }
